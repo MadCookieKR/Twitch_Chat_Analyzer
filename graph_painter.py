@@ -7,7 +7,7 @@ from chat import Chat
 class GraphPainter:
     keywords = ['lmao', 'lol', 'lewd', 'yabe']
 
-    def __init__(self, chatSegList: list[list[Chat]]):
+    def __init__(self, chatSegList: list[list[Chat]], keywords : list[str]):
         self.chatSegList = chatSegList
         self.isPaused = False
         self.acc = len(chatSegList[0])
@@ -18,6 +18,10 @@ class GraphPainter:
         self.y_avg_15 = []  # 1.15배
         self.y_avg_2 = []  # 1.2배
         self.ani = FuncAnimation(plt.gcf(), self.animate, interval=100)
+        if keywords:
+            self.keywords = keywords
+        print("Applied keywords : " + str(self.keywords))
+        print("적용된 키워드 : " + str(self.keywords))
 
     def draw_chat_graph(self):
         plt.show()

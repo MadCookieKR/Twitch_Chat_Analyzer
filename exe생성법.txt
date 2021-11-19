@@ -1,0 +1,2 @@
+터미널에서 쳐줍니다.
+pyinstaller twitch_chat_analyzer.py --onefile --i=icon.ico
