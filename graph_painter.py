@@ -34,9 +34,14 @@ class GraphPainter:
             self.ani.resume()
 
     def animate(self, i):
-        if self.count >= len(self.chatSegList) or len(self.chatSegList[self.count]) == 0:
+        # 모든 챗을 분석했을 경우
+        if self.count >= len(self.chatSegList):
             self.ani.pause()
             print("it's done !!!!!")
+            return
+        # 10초간 챗이 없는 구간일 경우 다음으로 넘어간다.
+        if len(self.chatSegList[self.count]) == 0:
+            self.count += 1
             return
 
         score = self.getHighlightScore(self.chatSegList[self.count])
