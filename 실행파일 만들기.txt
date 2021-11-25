@@ -1,1 +1,1 @@
-pyinstaller --icon=icon.ico --onefile twitch_chat_analyzer.py
+pyinstaller --icon=twitch_icon.ico --onefile twitch_chat_analyzer.py

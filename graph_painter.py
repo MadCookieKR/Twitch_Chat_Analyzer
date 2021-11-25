@@ -38,6 +38,7 @@ class GraphPainter:
             self.ani.pause()
             print("it's done !!!!!")
             return
+
         score = self.getHighlightScore(self.chatSegList[self.count])
         # 하이라이트 스코어는 (채팅 수 + 키워드가 일치한 수) 만큼으로 한다.
         self.x.append(self.chatSegList[self.count][0].time)

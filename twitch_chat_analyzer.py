@@ -6,19 +6,29 @@ from graph_painter import GraphPainter
 import os
 
 
-def to_time(time):
-    return dateparser.strptime(time, '%H:%M:%S')
+def to_time(time) -> datetime:
+    return dateparser.strptime(time, '%Y-%m-%d %H:%M:%S')
 
 
-def parse_time(time):
-    p = re.compile(r'(.{2}) ([0-9]{2}:[0-9]{2}:[0-9]{2})')
+def parse_time(time) -> datetime:
+    p = re.compile(r'([0-9]{2}). ([0-9]{2}). ([0-9]{2}). (.{2}) ([0-9]{2}):([0-9]{2}):([0-9]{2})')
     m = p.search(time)
     if m is None:
         return
-    time = to_time(m.group(2))
-    if time.hour != 12 and m.group(1) == '오후':
-        time = time + datetime.timedelta(hours=12)
+    year = m.group(1)
+    month = m.group(2)
+    day = m.group(3)
+    ampm = m.group(4)
+    hour = m.group(5)
+    minute = m.group(6)
+    second = m.group(7)
+    if ampm == '오후':
+        hour = int(hour) + 12
+    elif ampm == '오전' and hour == '12':
+        hour = int(hour) - 12
+    time = to_time(f'20{year}-{month}-{day} {hour}:{minute}:{second}')
     return time
+
 
 # for analyzing, Group chat by 10sec.
 # ex) group1 : 00:00~00:10, group2 : 00:10~00:20
@@ -34,6 +44,8 @@ def createChatSegList(chatList: list[Chat]) -> list[list[Chat]]:
             chatSeg.clear()
             timestamp = chat.time
         chatSeg.append(chat)
+    # last case
+    chatSegList.append(chatSeg.copy())
     return chatSegList
 
 
@@ -52,6 +64,7 @@ def analyze(fileName, keywords: list[str]):
         print("Failed to get chat log")
         print("채팅을 받아오는데 실패했습니다.")
         return
+
     first_chat_hour = chatList[0].time.hour
     first_chat_minute = chatList[0].time.minute
     first_chat_second = chatList[0].time.second
